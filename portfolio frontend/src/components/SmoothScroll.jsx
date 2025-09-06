@@ -5,31 +5,33 @@ const SmoothScroll = ({ children }) => {
   const lenisRef = useRef();
 
   useEffect(() => {
-    // Initialize Lenis
+    // Detect mobile for performance optimization
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    // Initialize Lenis with simplified, stable configuration
     const lenis = new Lenis({
-      duration: 1.2, // Duration of scroll animation
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom easing function
-      direction: 'vertical', // Scroll direction
-      gestureDirection: 'vertical', // Gesture direction
-      smooth: true, // Enable smooth scrolling
-      mouseMultiplier: 1, // Mouse wheel sensitivity
-      smoothTouch: false, // Disable smooth scrolling on touch devices for better performance
-      touchMultiplier: 2, // Touch sensitivity
-      infinite: false, // Disable infinite scroll
+      duration: isMobile ? 1.0 : 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: isMobile ? 0.8 : 1,
+      smoothTouch: false, // Keep disabled for better mobile performance
+      touchMultiplier: isMobile ? 1.5 : 2,
+      infinite: false,
     });
 
     lenisRef.current = lenis;
 
-    // Animation frame loop
+    // Simple, stable animation loop
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
 
-    // Add scroll event listener for other components that might need scroll position
+    // Simple scroll event dispatch
     const handleScroll = (e) => {
-      // Dispatch custom scroll event with Lenis scroll data
       window.dispatchEvent(new CustomEvent('lenisScroll', {
         detail: {
           scroll: e.scroll,
@@ -43,7 +45,7 @@ const SmoothScroll = ({ children }) => {
 
     lenis.on('scroll', handleScroll);
 
-    // Cleanup function
+    // Cleanup
     return () => {
       lenis.off('scroll', handleScroll);
       lenis.destroy();

@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import Card from "../components/Card";
 // import { Globe } from "../components/globe";
 import Matter from 'matter-js';
@@ -10,6 +10,97 @@ const Frameworks = () => {
   const grid2Container = useRef();
   const engineRef = useRef();
   const cardsRef = useRef([]);
+  const runnerRef = useRef();
+  const animationRef = useRef();
+  const frameworksSectionRef = useRef();
+  
+  // Smart performance management states
+  const [isPhysicsActive, setIsPhysicsActive] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isInteracting, setIsInteracting] = useState(false);
+  const lastInteractionTime = useRef(0);
+  const inactivityTimer = useRef();
+
+  // Smart pause/resume system for Frameworks section physics
+  const pausePhysics = useCallback(() => {
+    if (engineRef.current && runnerRef.current && isPhysicsActive) {
+      console.log('🔴 Pausing Frameworks section physics engine...');
+      Matter.Runner.stop(runnerRef.current);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      }
+      setIsPhysicsActive(false);
+    }
+  }, [isPhysicsActive]);
+
+  const resumePhysics = useCallback(() => {
+    if (engineRef.current && runnerRef.current && !isPhysicsActive && isVisible) {
+      console.log('🟢 Resuming Frameworks section physics engine...');
+      Matter.Runner.run(runnerRef.current, engineRef.current);
+      setIsPhysicsActive(true);
+    }
+  }, [isPhysicsActive, isVisible]);
+
+  // Handle user interactions (framework card dragging)
+  const handleInteraction = useCallback(() => {
+    lastInteractionTime.current = Date.now();
+    setIsInteracting(true);
+    
+    if (!isPhysicsActive && isVisible) {
+      resumePhysics();
+    }
+
+    // Clear existing timer
+    if (inactivityTimer.current) {
+      clearTimeout(inactivityTimer.current);
+    }
+
+    // Set inactivity timer (pause after 5 seconds for framework cards)
+    inactivityTimer.current = setTimeout(() => {
+      setIsInteracting(false);
+      // Only pause if no dragging is happening
+      if (isPhysicsActive && !isInteracting) {
+        pausePhysics();
+      }
+    }, 5000); // 5 seconds
+  }, [isPhysicsActive, isVisible, isInteracting, resumePhysics, pausePhysics]);
+
+  // Intersection Observer for visibility detection (Frameworks section)
+  useEffect(() => {
+    if (!frameworksSectionRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const newIsVisible = entry.isIntersecting;
+          setIsVisible(newIsVisible);
+          
+          if (newIsVisible) {
+            console.log('📍 Frameworks section is visible');
+            // Start physics when section becomes visible
+            if (!isPhysicsActive) {
+              resumePhysics();
+            }
+          } else {
+            console.log('📍 Frameworks section is hidden - pausing physics');
+            // Pause physics when section is not visible
+            pausePhysics();
+          }
+        });
+      },
+      {
+        threshold: 0.1, // Trigger when 10% visible
+        rootMargin: '50px' // Start a bit earlier
+      }
+    );
+
+    observer.observe(frameworksSectionRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isPhysicsActive, resumePhysics, pausePhysics]);
 
   useEffect(() => {
     if (!grid2Container.current) return;
@@ -179,10 +270,14 @@ const Frameworks = () => {
       isFixed: false,
       enabled: true
     });
-    Runner.run(runner, engine);
+    runnerRef.current = runner;
+    
+    // Only start if physics is active (visible and not paused)
+    if (isPhysicsActive) {
+      Runner.run(runner, engine);
+    }
 
     // Optimized position update with throttling
-    let animationId;
     let lastUpdate = 0;
     const targetFPS = 60;
     const frameDelay = 1000 / targetFPS;
@@ -210,18 +305,28 @@ const Frameworks = () => {
         });
         lastUpdate = timestamp;
       }
-      animationId = requestAnimationFrame(updateCardPositions);
+      // Only continue animation if physics is still active
+      if (isPhysicsActive) {
+        animationRef.current = requestAnimationFrame(updateCardPositions);
+      }
     };
-    animationId = requestAnimationFrame(updateCardPositions);
+    
+    // Only start animation if physics is active
+    if (isPhysicsActive) {
+      animationRef.current = requestAnimationFrame(updateCardPositions);
+    }
 
     // Cleanup function
     return () => {
       // Cancel animation frame
-      if (animationId) {
-        cancelAnimationFrame(animationId);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
       }
       
-      Runner.stop(runner);
+      if (runnerRef.current) {
+        Runner.stop(runnerRef.current);
+      }
       Engine.clear(engine);
       container.removeEventListener('mouseleave', handleMouseLeave);
       container.removeEventListener('mouseenter', handleMouseEnter);
@@ -230,16 +335,18 @@ const Frameworks = () => {
         mouse.element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
       }
     };
-  }, []);
+  }, [isPhysicsActive]);
 
   return (
-    <motion.section className="c-space section-spacing" id="about"
-   
-      
+    <motion.section 
+      ref={frameworksSectionRef}
+      className="c-space section-spacing" 
+      id="about"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}>
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
       <h2 className="text-heading">About Me</h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-6 md:auto-rows-[18rem] mt-12">
         {/* Grid 1 */}
@@ -262,6 +369,9 @@ const Frameworks = () => {
           <div
             ref={grid2Container}
             className="relative flex items-center justify-center w-full h-full overflow-hidden"
+            onMouseEnter={handleInteraction}
+            onMouseMove={handleInteraction}
+            onTouchStart={handleInteraction}
             style={{ 
               position: 'relative'
             }}

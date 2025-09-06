@@ -1,9 +1,9 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import Card from "../components/Card";
 import TechCards from "../components/TechCards";
 import { Globe } from "../components/globe";
 import Matter from 'matter-js';
-import Contact3D from "../components/Contact3D";
+// import Contact3D from "../components/Contact3D";
 
 const { Engine, World, Bodies, MouseConstraint, Mouse, Body, Runner } = Matter;
 // import CopyEmailButton from "../components/CopyEmailButton";
@@ -15,6 +15,99 @@ const About = () => {
   const engineRef = useRef();
   const cardsRef = useRef([]);
   const cardElementsRef = useRef([]);
+  const runnerRef = useRef();
+  const animationRef = useRef();
+  const aboutSectionRef = useRef();
+  
+  // Smart performance management states
+  const [isPhysicsActive, setIsPhysicsActive] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isInteracting, setIsInteracting] = useState(false);
+  const lastInteractionTime = useRef(0);
+  const inactivityTimer = useRef();
+
+  // Smart pause/resume system for About section physics
+  const pausePhysics = useCallback(() => {
+    if (engineRef.current && runnerRef.current && isPhysicsActive) {
+      console.log('🔴 Pausing About section physics engine (tech cards)...');
+      Matter.Runner.stop(runnerRef.current);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      }
+      setIsPhysicsActive(false);
+    }
+  }, [isPhysicsActive]);
+
+  const resumePhysics = useCallback(() => {
+    if (engineRef.current && runnerRef.current && !isPhysicsActive && isVisible) {
+      console.log('🟢 Resuming About section physics engine (tech cards)...');
+      Matter.Runner.run(runnerRef.current, engineRef.current);
+      setIsPhysicsActive(true);
+    }
+  }, [isPhysicsActive, isVisible]);
+
+  // Handle user interactions (tech card dragging)
+  const handleInteraction = useCallback(() => {
+    lastInteractionTime.current = Date.now();
+    setIsInteracting(true);
+    
+    if (!isPhysicsActive && isVisible) {
+      resumePhysics();
+    }
+
+    // Clear existing timer
+    if (inactivityTimer.current) {
+      clearTimeout(inactivityTimer.current);
+    }
+
+    // Set inactivity timer (pause after 8 seconds for tech cards since they fall longer)
+    inactivityTimer.current = setTimeout(() => {
+      setIsInteracting(false);
+      // Only pause if no dragging is happening
+      if (isPhysicsActive && !isInteracting) {
+        pausePhysics();
+      }
+    }, 8000); // 8 seconds for falling animation
+  }, [isPhysicsActive, isVisible, isInteracting, resumePhysics, pausePhysics]);
+
+  // Intersection Observer for visibility detection (About section)
+  useEffect(() => {
+    if (!aboutSectionRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const newIsVisible = entry.isIntersecting;
+          setIsVisible(newIsVisible);
+          
+          if (newIsVisible) {
+            console.log('📍 About section with tech cards is visible');
+            // Start physics when section becomes visible with falling animation
+            setTimeout(() => {
+              if (!isPhysicsActive) {
+                resumePhysics();
+              }
+            }, 600); // Longer delay for dramatic falling effect
+          } else {
+            console.log('📍 About section is hidden - pausing tech cards physics');
+            // Pause physics when section is not visible
+            pausePhysics();
+          }
+        });
+      },
+      {
+        threshold: 0.2, // Trigger when 20% visible (better for falling animation)
+        rootMargin: '100px' // Start earlier for falling effect
+      }
+    );
+
+    observer.observe(aboutSectionRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isPhysicsActive, resumePhysics, pausePhysics]);
 
   useEffect(() => {
     if (!grid3Container.current) return;
@@ -274,10 +367,14 @@ const About = () => {
         isFixed: true,
         enabled: true
       });
-      Runner.run(runner, engine);
+      runnerRef.current = runner;
+      
+      // Only start if physics is active (visible and not paused)
+      if (isPhysicsActive) {
+        Runner.run(runner, engine);
+      }
 
       // Optimized position update with throttling and no DOM reads
-      let animationId;
       let lastUpdate = 0;
       const targetFPS = isMobile ? 45 : 60; // Lower FPS on mobile for better performance
       const frameDelay = 1000 / targetFPS;
@@ -318,9 +415,16 @@ const About = () => {
           });
           lastUpdate = timestamp;
         }
-        animationId = requestAnimationFrame(updateCardPositions);
+        // Only continue animation if physics is still active
+        if (isPhysicsActive) {
+          animationRef.current = requestAnimationFrame(updateCardPositions);
+        }
       };
-      animationId = requestAnimationFrame(updateCardPositions);
+      
+      // Only start animation if physics is active
+      if (isPhysicsActive) {
+        animationRef.current = requestAnimationFrame(updateCardPositions);
+      }
 
       // Resize handler to update bounds without disrupting physics much
       const handleResize = () => {
@@ -338,11 +442,14 @@ const About = () => {
       // Cleanup function
       return () => {
         // Cancel animation frame
-        if (animationId) {
-          cancelAnimationFrame(animationId);
+        if (animationRef.current) {
+          cancelAnimationFrame(animationRef.current);
+          animationRef.current = null;
         }
         
-        Runner.stop(runner);
+        if (runnerRef.current) {
+          Runner.stop(runnerRef.current);
+        }
         Engine.clear(engine);
         container.removeEventListener('mouseleave', handleMouseLeave);
         container.removeEventListener('mouseenter', handleMouseEnter);
@@ -369,10 +476,10 @@ const About = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, []);
+  }, [isPhysicsActive]);
 
   return (
-    <section className="c-space section-spacing" id="about">
+    <section ref={aboutSectionRef} className="c-space section-spacing" id="about">
       <h2 className="text-heading">About Me</h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-6 md:auto-rows-[18rem] mt-12">
         {/* Grid 1 */}
@@ -382,11 +489,13 @@ const About = () => {
             className="absolute scale-[1.75] -right-[5rem] -top-[1rem] md:scale-[3] md:left-50 md:inset-y-10 lg:scale-[2.5]"
           />
           <div className="z-10">
-            <p className="headtext">Hi, I'm Abdullah Akram</p>
-            <p className="subtext">
-              Over the last 2 years, I developed my frontend and backend dev
-              skills to deliver dynamic and software and web applications.
-            </p>
+           <p className="headtext">Hi, I'm Abdullah Akram</p>
+<p className="subtext">
+  A passionate <b>Full-Stack Developer</b> specializing in the <b>MERN stack</b> and <b>Next.js</b>. 
+  I craft modern, scalable, and interactive web applications that blend clean 
+  UI with powerful backend logic.
+</p>
+
           </div>
           <div className="absolute inset-x-0 pointer-evets-none -bottom-4 h-1/2 sm:h-1/3 bg-gradient-to-t from-indigo" />
         </div>
@@ -400,28 +509,28 @@ const About = () => {
               CODE IS CRAFT
             </p>
             <Card
-              style={{ transform: "rotate(75deg)", top: "30%", left: "20%" }}
-              text="GRASP"
+              style={{  top: "30%", left: "20%" }}
+              text="Clean Code"
               containerRef={grid2Container}
             />
             <Card
-              style={{ transform: "rotate(-30deg)", top: "60%", left: "45%" }}
-              text="SOLID"
+              style={{  top: "60%", left: "45%" }}
+              text="Problem Solving"
               containerRef={grid2Container}
             />
             <Card
-              style={{ transform: "rotate(90deg)", bottom: "30%", left: "70%" }}
-              text="Design Patterns"
+              style={{ bottom: "30%", left: "70%" }}
+              text="UI/UX Focus"
               containerRef={grid2Container}
             />
             <Card
-              style={{ transform: "rotate(-45deg)", top: "55%", left: "0%" }}
-              text="Design Principles"
+              style={{  top: "55%", left: "0%" }}
+              text="Performance Optimized"
               containerRef={grid2Container}
             />
             <Card
-              style={{ transform: "rotate(20deg)", top: "10%", left: "38%" }}
-              text="SRP"
+              style={{ top: "10%", left: "38%" }}
+              text="Scalable Design"
               containerRef={grid2Container}
             />
             {/* <Card
@@ -442,22 +551,27 @@ const About = () => {
           </div>
         </div>
         {/* Grid 3 */}
-        <div className="grid-black-color grid-3">
-          <div className="z-10 w-[50%]">
-            <p className="headtext">Time Zone</p>
-            <p className="subtext">
-              I'm based in Pakistan, and open to remote work worldwide
-            </p>
+        <div className="grid-black-color grid-3 relative overflow-visible">
+          <div className="z-10  w-[50%]">
+           <p className="headtext">Remote & Global</p>
+<p className="subtext pb-14">
+  Based in Pakistan, available for <b>remote projects</b> worldwide. 
+  Flexible with time zones and focused on smooth  collaboration.
+</p>
+
           </div>
-          <figure className="absolute left-[30%] top-[10%]">
-            <Globe />
+          <figure className="absolute bottom-0 right-0">
+            <div className="w-60 h-60 flex items-center justify-center overflow-visible transform scale-y-[-1]">
+              <Globe />
+            </div>
           </figure>
         </div>
         {/* Grid 4 */}
         <div className="grid-special-color grid-4">
           <div className="flex flex-col items-center justify-center gap-4 size-full">
             <p className="text-center headtext">
-              Do you want to contact me?
+              What to see my Physics-Powered skills in action ?
+              <p className="pt-5"></p> <b>grab, drag, and play with <p></p> icons!</b> 
             </p>
             {/* <CopyEmailButton /> */}
           </div>
@@ -474,6 +588,9 @@ const About = () => {
           <div
             ref={grid3Container}
             className="relative w-full h-full overflow-hidden"
+            onMouseEnter={handleInteraction}
+            onMouseMove={handleInteraction}
+            onTouchStart={handleInteraction}
             style={{ 
               position: 'absolute',
               top: 0,
@@ -485,7 +602,7 @@ const About = () => {
           >
             <TechCards
               style={{ position: "absolute", top: "15%", left: "70%", transform: "rotate(30deg)" }}
-              image="assets/logos/cplusplus.svg"
+              image="assets/logos/gsap.png"
             />
             <TechCards
               style={{ position: "absolute", top: "75%", left: "25%", transform: "rotate(-45deg)" }}
@@ -493,7 +610,7 @@ const About = () => {
             />
             <TechCards
               style={{ position: "absolute", top: "10%", left: "15%", transform: "rotate(-25deg)" }}
-              image="assets/logos/git.svg"
+              image="assets/logos/nextjs.svg"
             />
             <TechCards
               style={{ position: "absolute", top: "60%", left: "80%", transform: "rotate(15deg)" }}

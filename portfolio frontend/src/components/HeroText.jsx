@@ -1,40 +1,33 @@
 import { FlipWords } from "./FlipWords";
 import { motion } from "motion/react";
+import { performanceVariants, containerVariants } from "../utils/animationOptimizations.js";
 
 const HeroText = () => {
   const words = ["Secure", "Modern", "Scalable"];
-  const variants = {
-    hidden: { opacity: 0, x: -50 },
-    visible: { opacity: 1, x: 0 },
-  };
   return (
     <div className="z-10 mt-20 text-center md:mt-40 md:text-left rounded-3xl bg-clip-text">
       {/* Desktop View */}
-      <div className="flex-col hidden md:flex c-space">
+      <motion.div 
+        className="flex-col hidden md:flex c-space"
+        variants={containerVariants.medium}
+        initial="hidden"
+        animate="visible"
+      >
         <motion.h1
           className="text-4xl font-medium"
-          variants={variants}
-          initial="hidden"
-          animate="visible"
-          transition={{ delay: 1 }}
+          variants={performanceVariants.slideLeft}
         >
           Hi I'm Abdullah
         </motion.h1>
         <div className="flex flex-col items-start">
           <motion.p
             className="text-5xl font-medium text-neutral-300"
-            variants={variants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 1.2 }}
+            variants={performanceVariants.slideLeft}
           >
             A Developer <br /> Dedicated to Crafting
           </motion.p>
           <motion.div
-            variants={variants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 1.5 }}
+            variants={performanceVariants.fadeIn}
           >
             <FlipWords
               words={words}
@@ -43,41 +36,40 @@ const HeroText = () => {
           </motion.div>
           <motion.p
             className="text-4xl font-medium text-neutral-300"
-            variants={variants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 1.8 }}
+            variants={performanceVariants.slideLeft}
           >
             Web Solutions
           </motion.p>
         </div>
-      </div>
+      </motion.div>
       {/* Mobile View */}
-      <div className="flex flex-col space-y-6 md:hidden">
+      <motion.div 
+        className="flex flex-col space-y-6 md:hidden"
+        variants={containerVariants.medium}
+        initial="hidden"
+        animate="visible"
+      >
         <motion.p
           className="text-4xl font-medium"
-          variants={variants}
+          variants={performanceVariants.fadeIn}
           initial="hidden"
           animate="visible"
-          transition={{ delay: 1 }}
         >
           Hi,I'm Abdullah
         </motion.p>
         <div>
           <motion.p
             className="text-5xl font-black text-neutral-300"
-            variants={variants}
+            variants={performanceVariants.slideUp}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 1.2 }}
           >
             Building
           </motion.p>
           <motion.div
-            variants={variants}
+            variants={performanceVariants.scaleIn}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 1.5 }}
           >
             <FlipWords
               words={words}
@@ -85,16 +77,15 @@ const HeroText = () => {
             />
           </motion.div>
           <motion.p
-            className="text-4xl font-black text-neutral300"
-            variants={variants}
+            className="text-4xl font-black text-neutral-300"
+            variants={performanceVariants.slideUp}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 1.8 }}
           >
             Web Applications
           </motion.p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

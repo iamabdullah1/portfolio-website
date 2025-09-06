@@ -1,33 +1,34 @@
 export const myProjects = [
   {
     id: 1,
-    title: "E-commerce Platform",
+    title: "Education Consultancy Website",
     description:
-      "Facilitates purchases from international websites like Amazon and eBay, allowing customers to shop from these sites and have products delivered domestically.",
+      "Provides guidance for students aspiring to study abroad, offering consultancy services for university admissions, visa processes, and international career counseling. The platform connects students with verified consultants and resources to simplify their study abroad journey.",
     subDescription: [
-      "Built a scalable application with ASP.NET Core MVC, integrating global platforms like Amazon for domestic delivery.",
-      "Implemented secure authentication and database management using ASP.NET Core Identity and Entity Framework Core.",
-      "Designed a responsive frontend with Tailwind CSS, enhancing user experience.",
-      "Added payment systems, localization, and product filtering for functionality improvements.",
+      "⚛️ Built with React (frontend), Node.js (backend), and Tailwind CSS",
+      "🎬 Smooth GSAP animations with ScrollTrigger for engaging UI",
+      "🔐 Role-based authentication & authorization for students, consultants, and admins",
+      "📅 Features like appointment booking, document management, and live chat",
+      "📊 Admin dashboards to monitor student progress and consultant performance"
     ],
-    href: "",
+    href: "https://socraticaliconsultants.com/",
     logo: "",
-    image: "/assets/projects/accessories.jpg",
+    image: "/assets/projects/p1.png",
     tags: [
       {
         id: 1,
-        name: "C#",
-        path: "/assets/logos/csharp.svg",
+        name: "ReactJs",
+        path: "/assets/logos/react.svg",
       },
       {
         id: 2,
-        name: ".Net",
-        path: "/assets/logos/dotnet.svg",
+        name: "GSAP",
+        path: "/assets/logos/gsap.png",
       },
       {
         id: 3,
-        name: "Ef Core",
-        path: "/assets/logos/efcore.png",
+        name: "Node.js",
+        path: "/assets/logos/nodejs.png",
       },
       {
         id: 4,
@@ -231,51 +232,57 @@ export const mySocials = [
   },
   {
     name: "Linkedin",
-    href: "https://www.linkedin.com/in/ali-sanati/",
+    href: "https://www.linkedin.com/in/abdullah-akram-a8b213318/",
     icon: "/assets/socials/linkedIn.svg",
   },
   {
-    name: "Instagram",
-    href: "https://www.instagram.com/ali.sanatidev/reels/",
-    icon: "/assets/socials/instagram.svg",
+    name: "GitHub",
+    href: "https://github.com/iamabdullah1",
+    icon: "/assets/socials/github.svg",
   },
 ];
 
 export const experiences = [
   {
-    title: "Software Developer",
-    job: "Security & Defense Projects",
-    date: "2021-2023",
+    title: "Frontend Developer",
+    job: "Meldin, Lahore",
+    date: "2023 - 2024",
     contents: [
-      "Enhanced application security and developed new features, adhering to standards set by the Passive Defense Organization and National Cyberspace Center.",
-      "Designed and implemented intuitive map interfaces using MapsUI, enhancing user experience and enabling seamless interactive map integration.",
-      "Developed applications for industrial automation, leveraging C++ and the Fatek API for PLC communication.",
-      "Enhanced responsiveness and usability of applications using Windows Forms and WPF frameworks.",
-      "Executed XML to SVG conversions using X-DOM, ensuring dynamic and efficient data visualization.",
+      "Developed scalable and responsive UIs using React.js, Tailwind CSS, and modern frontend practices.",
+      "Built a fully functional Employee Management Dashboard with protected routes, JWT-based authentication, and Chart.js visualizations for performance tracking.",
+      "Integrated REST APIs with frontend components, ensuring smooth and secure data communication.",
+      "Enhanced user experience by implementing GSAP animations and ScrollTrigger for interactive interfaces.",
+      "Optimized frontend performance, reducing initial load times by ~30% through code splitting and asset optimization.",
     ],
   },
   {
-    title: "Back-End Developer",
-    job: "Car Manufacture",
-    date: "2023-2024",
+    title: "Full-Stack Developer (MERN)",
+    job: "Apexez, Lahore",
+    date: "2024 - 2025",
     contents: [
-      "Engineered systems for large-scale data ingestion and analysis, ensuring efficient data processing and storage.",
-      "Developed back-end systems enabling vehicle-to-cloud communication for telemetry, diagnostics, and remote control:",
-      "✅ Implemented secure APIs, following ISO 26262 automotive safety standards.",
-      "✅ Ensured data privacy for customers and partners through industry-compliant protocols.",
-      "✅ Delivered remote features like over-the-air updates, real-time tracking, and remote start capabilities.",
+      "Designed and developed RESTful APIs with Node.js and Express.js, enabling robust backend services.",
+      "Implemented **role-based authentication and authorization using JWT**, ensuring secure access across different user types.",
+      "Designed MongoDB schemas and queries optimized for high-volume transactional data.",
+      "Built advanced features such as automated bilty generation, invoice systems, and dynamic form validation for logistics applications.",
+      "Collaborated in Agile sprints, fixing backend issues and improving API reliability by ~20%.",
     ],
   },
   {
-    title: "Freelance Developer",
-    job: "Self-Employed",
-    date: "2025-Present",
+    title: "Full-Stack Developer (Next.js & MERN)",
+    job: "Freeelance & Personal Projects",
+    date: "2025 - Present",
     contents: [
-      "Created a personal portfolio using Three.js, React, Vite, and WebAPI to showcase technical expertise.",
-      "Continuously enhancing technical skills and expanding expertise in modern web development and back-end technologies.",
+       "Specialized in building production-ready web applications with **Next.js, MERN stack, and Tailwind CSS**.",
+    "Created interactive portfolios and client projects featuring **3D models with Three.js, Sketchfab integration, and GSAP animations**.",
+    "Developed secure, full-stack applications with **API routes, server-side rendering (SSR), dynamic routing, and authentication in Next.js**.",
+    "Implemented **real-time features** like chat apps and live dashboards using WebSockets and REST API integrations.",
+    "Explored **physics engines (Matter.js)** and **3D interactions** to build immersive web experiences with collision effects and draggable components.",
+    "Optimized frontend performance with Next.js features like **Image Optimization, ISR (Incremental Static Regeneration), and code splitting**.",
+    "Continuously enhancing technical expertise and contributing to freelance projects with **cutting-edge web technologies and AI-powered integrations**.",
     ],
   },
 ];
+
 export const reviews = [
   {
     name: "Jack",
