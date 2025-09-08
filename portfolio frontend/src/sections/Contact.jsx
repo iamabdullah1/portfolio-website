@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import Alert from "../components/Alert";
 import { Particles } from "../components/Particles";
 import { ScrollMotion, TextReveal } from "../utils/dramaticScrollAnimations.jsx";
+
 const Contact = () => {
+  const form = useRef();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -13,9 +15,19 @@ const Contact = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertType, setAlertType] = useState("success");
   const [alertMessage, setAlertMessage] = useState("");
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    // Map EmailJS field names to our state
+    if (name === "from_name") {
+      setFormData({ ...formData, name: value });
+    } else if (name === "from_email") {
+      setFormData({ ...formData, email: value });
+    } else if (name === "message") {
+      setFormData({ ...formData, message: value });
+    }
   };
+
   const showAlertMessage = (type, message) => {
     setAlertType(type);
     setAlertMessage(message);
@@ -28,27 +40,85 @@ const Contact = () => {
     e.preventDefault();
     setIsLoading(true);
 
+    // Get environment variables
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    console.log("🔍 Environment Variables Check:");
+    console.log("Service ID:", serviceId);
+    console.log("Template ID:", templateId);
+    console.log("Public Key:", publicKey);
+
+    if (!serviceId || !templateId || !publicKey) {
+      console.error("❌ Missing EmailJS configuration");
+      setIsLoading(false);
+      showAlertMessage("danger", "EmailJS configuration is incomplete.");
+      return;
+    }
+
     try {
-      console.log("From submitted:", formData);
-      await emailjs.send(
-        "service_79b0nyj",
-        "template_17us8im",
-        {
-          from_name: formData.name,
-          to_name: "Ali",
-          from_email: formData.email,
-          to_email: "AliSanatiDev@gmail.com",
-          message: formData.message,
-        },
-        "pn-Bw_mS1_QQdofuV"
+      console.log("📝 Form Data:", formData);
+      
+      // Method 1: Try sendForm with form element
+      const result = await emailjs.sendForm(
+        serviceId,
+        templateId,
+        form.current,
+        publicKey
       );
+      
+      console.log("✅ EmailJS Success:", result);
       setIsLoading(false);
       setFormData({ name: "", email: "", message: "" });
-      showAlertMessage("success", "You message has been sent!");
+      showAlertMessage("success", "Your message has been sent successfully!");
+      
     } catch (error) {
-      setIsLoading(false);
-      console.log(error);
-      showAlertMessage("danger", "Somthing went wrong!");
+      console.error("❌ EmailJS Error:", error);
+      
+      // If sendForm fails, try the regular send method as backup
+      try {
+        console.log("🔄 Trying backup method...");
+        
+        const templateParams = {
+          from_name: formData.name,
+          from_email: formData.email,
+          to_name: import.meta.env.VITE_TO_NAME || "Portfolio Owner",
+          to_email: import.meta.env.VITE_TO_EMAIL || "your.email@gmail.com",
+          message: formData.message,
+          reply_to: formData.email,
+        };
+
+        const backupResult = await emailjs.send(
+          serviceId,
+          templateId,
+          templateParams,
+          publicKey
+        );
+        
+        console.log("✅ Backup method Success:", backupResult);
+        setIsLoading(false);
+        setFormData({ name: "", email: "", message: "" });
+        showAlertMessage("success", "Your message has been sent successfully!");
+        
+      } catch (backupError) {
+        setIsLoading(false);
+        console.error("❌ Both methods failed:", backupError);
+        
+        let errorMessage = "Failed to send message. ";
+        
+        if (backupError.status === 404) {
+          errorMessage += "Account not found. Please verify your EmailJS Public Key.";
+        } else if (backupError.status === 400) {
+          errorMessage += "Invalid configuration. Please check your Service ID and Template ID.";
+        } else if (backupError.status === 422) {
+          errorMessage += "Template error. Please check your EmailJS template variables.";
+        } else {
+          errorMessage += `Error ${backupError.status}: ${backupError.text || "Unknown error"}`;
+        }
+        
+        showAlertMessage("danger", errorMessage);
+      }
     }
   };
   return (
@@ -78,14 +148,14 @@ const Contact = () => {
         </ScrollMotion>
         
         <ScrollMotion variant="elasticBounce" delay={0.6}>
-          <form className="w-full" onSubmit={handleSubmit}>
+          <form ref={form} className="w-full" onSubmit={handleSubmit}>
           <div className="mb-5">
             <label htmlFor="name" className="feild-label">
               Full Name
             </label>
             <input
               id="name"
-              name="name"
+              name="from_name"
               type="text"
               className="field-input field-input-focus"
               placeholder="John Doe"
@@ -101,7 +171,7 @@ const Contact = () => {
             </label>
             <input
               id="email"
-              name="email"
+              name="from_email"
               type="email"
               className="field-input field-input-focus"
               placeholder="JohnDoe@email.com"
@@ -128,6 +198,12 @@ const Contact = () => {
               required
             />
           </div>
+          
+          {/* Hidden fields for EmailJS template */}
+          <input type="hidden" name="to_name" value={import.meta.env.VITE_TO_NAME || "Portfolio Owner"} />
+          <input type="hidden" name="to_email" value={import.meta.env.VITE_TO_EMAIL || "your.email@gmail.com"} />
+          <input type="hidden" name="reply_to" value={formData.email} />
+          
           <button
             type="submit"
             className="w-full px-1 py-3 text-lg text-center rounded-md cursor-pointer bg-radial from-lavender to-royal hover-animation"

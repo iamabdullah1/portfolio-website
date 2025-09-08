@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EmailJS Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+    <h1>EmailJS Configuration Test</h1>
+    
+    <form id="contact-form">
+        <label>Name: <input type="text" name="from_name" value="Test User"></label><br><br>
+        <label>Email: <input type="email" name="from_email" value="test@test.com"></label><br><br>
+        <label>Message: <textarea name="message">Test message</textarea></label><br><br>
+        <button type="submit">Send Test Email</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        // Initialize EmailJS with your public key
+        emailjs.init('YOUR_PUBLIC_KEY_HERE'); // Replace with your actual public key
+
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const result = document.getElementById('result');
+            result.innerHTML = 'Sending...';
+
+            emailjs.sendForm(
+                'YOUR_SERVICE_ID_HERE',  // Replace with your service ID
+                'YOUR_TEMPLATE_ID_HERE', // Replace with your template ID
+                this
+            ).then(function(response) {
+                console.log('SUCCESS!', response.status, response.text);
+                result.innerHTML = `<p style="color: green;">SUCCESS! Status: ${response.status}</p>`;
+            }, function(error) {
+                console.log('FAILED...', error);
+                result.innerHTML = `<p style="color: red;">FAILED: ${JSON.stringify(error)}</p>`;
+            });
+        });
+    </script>
+</body>
+</html>
