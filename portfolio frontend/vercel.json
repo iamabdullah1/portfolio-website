@@ -3,12 +3,5 @@
   "outputDirectory": "dist",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "framework": "vite",
-  "env": {
-    "VITE_EMAILJS_SERVICE_ID": "@vite_emailjs_service_id",
-    "VITE_EMAILJS_TEMPLATE_ID": "@vite_emailjs_template_id", 
-    "VITE_EMAILJS_PUBLIC_KEY": "@vite_emailjs_public_key",
-    "VITE_TO_EMAIL": "@vite_to_email",
-    "VITE_TO_NAME": "@vite_to_name"
-  }
+  "framework": "vite"
 }
