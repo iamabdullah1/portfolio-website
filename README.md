@@ -159,8 +159,8 @@ npm run preview # Preview production build
 
 **Abdullah**
 - GitHub: [@iamabdullah1](https://github.com/iamabdullah1)
-- LinkedIn: [Your LinkedIn Profile]
-- Portfolio: [Live Portfolio URL]
+- LinkedIn: (https://www.linkedin.com/in/abdullah-akram-a8b213318/)
+- Portfolio: https://abdullah-akram.vercel.app/
 
 ---
 
