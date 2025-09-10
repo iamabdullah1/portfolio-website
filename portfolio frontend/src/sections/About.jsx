@@ -1,7 +1,7 @@
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState, useCallback, lazy } from "react";
 import Card from "../components/Card";
 import TechCards from "../components/TechCards";
-import { Globe } from "../components/Globe";
+const Globe = lazy(() => import('../components/Globe'));
 import Matter from 'matter-js';
 // import Contact3D from "../components/Contact3D";
 
@@ -660,3 +660,16 @@ const About = () => {
 };
 
 export default About;
+
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          three: ['three', '@react-three/fiber'],
+        }
+      }
+    }
+  }
+});
