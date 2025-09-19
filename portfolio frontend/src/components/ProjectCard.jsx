@@ -6,7 +6,7 @@ const ProjectCard = ({
   description,
   subDescription,
   href,
-  image,
+  images,
   tags,
 }) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -19,7 +19,7 @@ const ProjectCard = ({
   return (
     <>
       <div className="relative border shadow-sm rounded-2xl bg-gradient-to-l from-midnight to-navy border-white/10 hover:-translate-y-1 duration-200 transition-transform">
-        <img src={image} alt={title} className="w-full h-48 object-cover rounded-t-2xl" />
+        <img src={images && images.length > 0 ? images[0] : ""} alt={title} className="w-full h-48 object-cover rounded-t-2xl" />
         <div className="p-5">
           <h5 className="mb-2 text-xl font-bold text-white">{title}</h5>
           
@@ -71,7 +71,7 @@ const ProjectCard = ({
           title={title}
           description={description}
           subDescription={subDescription}
-          image={image}
+          images={images}
           tags={tags}
           href={href}
           closeModal={() => setShowDetails(false)}

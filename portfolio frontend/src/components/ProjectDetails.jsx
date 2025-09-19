@@ -5,7 +5,7 @@ const ProjectDetails = ({
   title,
   description,
   subDescription,
-  image,
+  images,
   tags,
   href,
   closeModal,
@@ -47,11 +47,22 @@ const ProjectDetails = ({
 
   const modalHeight = getModalHeight();
 
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-hidden backdrop-blur-sm p-4">
       <motion.div
-        className="relative w-full max-w-4xl overflow-y-auto border shadow-sm rounded-2xl bg-gradient-to-l from-midnight to-navy border-white/10"
-        style={{ maxHeight: `${modalHeight}px` }}
+        className="relative max-w-2xl border shadow-sm rounded-2xl bg-gradient-to-l from-midnight to-navy border-white/10 overflow-y-auto scrollbar-hide"
+        style={{ height: modalHeight + "px", WebkitOverflowScrolling: "touch" }}
+        onWheel={(e) => e.stopPropagation()}
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
       >
@@ -61,11 +72,35 @@ const ProjectDetails = ({
         >
           <img src="assets/close.svg" className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-48 sm:h-64 md:h-80 object-cover rounded-t-2xl"
-        />
+        <div className="relative w-full h-48 sm:h-64 md:h-80 rounded-t-2xl overflow-hidden flex items-center justify-center bg-black">
+          <img
+            src={images[currentImageIndex]}
+            alt={`${title} image ${currentImageIndex + 1}`}
+            className="max-w-full max-h-full object-contain rounded-t-2xl"
+          />
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={prevImage}
+                className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-midnight/70 hover:bg-midnight/90 text-white rounded-full p-1 z-20"
+                aria-label="Previous Image"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') prevImage(); }}
+              >
+                &#8592;
+              </button>
+              <button
+                onClick={nextImage}
+                className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-midnight/70 hover:bg-midnight/90 text-white rounded-full p-1 z-20"
+                aria-label="Next Image"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') nextImage(); }}
+              >
+                &#8594;
+              </button>
+            </>
+          )}
+        </div>
         <div className="p-4 sm:p-6 md:p-8">
           <h5 className="mb-3 text-xl sm:text-2xl md:text-3xl font-bold text-white">{title}</h5>
           <p className="mb-4 font-normal text-neutral-400 text-sm sm:text-base leading-relaxed">{description}</p>

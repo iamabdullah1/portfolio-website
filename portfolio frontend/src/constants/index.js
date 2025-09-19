@@ -13,7 +13,7 @@ export const myProjects = [
     ],
     href: "https://socraticaliconsultants.com/",
     logo: "",
-    image: "/assets/projects/p1.png",
+    images: ["/assets/projects/p1.png"],
     tags: [
       {
         id: 1,
@@ -50,7 +50,7 @@ export const myProjects = [
     ],
     href: "",
     logo: "",
-    image: "/assets/projects/auth-system.jpg",
+    images: ["/assets/projects/auth-system.jpg"],
     tags: [
       {
         id: 1,
@@ -87,7 +87,7 @@ export const myProjects = [
     ],
     href: "",
     logo: "",
-    image: "/assets/projects/blazor-app.jpg",
+    images: ["/assets/projects/blazor-app.jpg"],
     tags: [
       {
         id: 1,
@@ -124,7 +124,7 @@ export const myProjects = [
     ],
     href: "",
     logo: "",
-    image: "/assets/projects/game-engine.jpg",
+    images: ["/assets/projects/game-engine.jpg"],
     tags: [
       {
         id: 1,
