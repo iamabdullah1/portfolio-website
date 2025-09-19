@@ -1,13 +1,11 @@
-import { useRef, useEffect, useState, useCallback, lazy } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import Card from "../components/Card";
-import TechCards from "../components/TechCards"; 
-import Globe from '../components/Globe';
+import TechCards from "../components/TechCards";
+import { Globe } from "../components/Globe";
 import Matter from 'matter-js';
-// import Contact3D from "../components/Contact3D";
+
 
 const { Engine, World, Bodies, MouseConstraint, Mouse, Body, Runner } = Matter;
-// import CopyEmailButton from "../components/CopyEmailButton";
-// import { Frameworks } from "../components/FrameWorks";
 
 const About = () => {
   const grid2Container = useRef();
@@ -660,4 +658,3 @@ const About = () => {
 };
 
 export default About;
-
