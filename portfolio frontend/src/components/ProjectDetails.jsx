@@ -47,6 +47,9 @@ const ProjectDetails = ({
 
   const modalHeight = getModalHeight();
 
+  // Check if href is a GitHub link
+  const isGitHubLink = href && (href.includes('github.com') || href.includes('githubusercontent.com'));
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const nextImage = () => {
@@ -125,7 +128,7 @@ const ProjectDetails = ({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 font-medium cursor-pointer hover-animation text-sm sm:text-base whitespace-nowrap"
               >
-                Visit Website{" "}
+                {isGitHubLink ? 'View Code' : 'Visit Website'}{" "}
                 <img src="assets/arrow-up.svg" className="w-4 h-4 sm:w-5 sm:h-5" />
               </a>
             )}

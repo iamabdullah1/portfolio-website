@@ -16,6 +16,9 @@ const ProjectCard = ({
     ? description.substring(0, 120) + "..." 
     : description;
 
+  // Check if href is a GitHub link
+  const isGitHubLink = href && (href.includes('github.com') || href.includes('githubusercontent.com'));
+
   return (
     <>
       <div className="relative border shadow-sm rounded-2xl bg-gradient-to-l from-midnight to-navy border-white/10 hover:-translate-y-1 duration-200 transition-transform">
@@ -57,7 +60,7 @@ const ProjectCard = ({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 font-medium cursor-pointer hover-animation text-sm"
               >
-                Visit Website
+                {isGitHubLink ? 'View Code' : 'Visit Website'}
                 <img src="/assets/arrow-up.svg" className="size-4" />
               </a>
             )}

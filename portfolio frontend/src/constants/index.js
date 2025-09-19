@@ -5,11 +5,11 @@ export const myProjects = [
     description:
       "Provides guidance for students aspiring to study abroad, offering consultancy services for university admissions, visa processes, and international career counseling. The platform connects students with verified consultants and resources to simplify their study abroad journey.",
     subDescription: [
-      "⚛️ Built with React (frontend), Node.js (backend), and Tailwind CSS",
-      "🎬 Smooth GSAP animations with ScrollTrigger for engaging UI",
-      "🔐 Role-based authentication & authorization for students, consultants, and admins",
-      "📅 Features like appointment booking, document management, and live chat",
-      "📊 Admin dashboards to monitor student progress and consultant performance"
+      "Built with React (frontend), Node.js (backend), and Tailwind CSS",
+      "Smooth GSAP animations with ScrollTrigger for engaging UI",
+      "Role-based authentication & authorization for students, consultants, and admins",
+      "Features like appointment booking, document management, and live chat",
+      "Admin dashboards to monitor student progress and consultant performance"
     ],
     href: "https://socraticaliconsultants.com/",
     logo: "",
@@ -34,6 +34,16 @@ export const myProjects = [
         id: 4,
         name: "TailwindCSS",
         path: "/assets/logos/tailwindcss.svg",
+      },
+          {
+        id: 5,
+        name: "MongoDB",
+        path: "/assets/logos/mongodb.svg",
+      },
+      {
+        id: 6,
+        name: "Express.js",
+        path: "/assets/logos/Express-js.png",
       },
     ],
   },
@@ -76,38 +86,48 @@ export const myProjects = [
   },
   {
     id: 3,
-    title: "Blazor Web App",
+    title: "Management Information System (MIS) for Software Company",
     description:
-      "A modern, interactive web application built with Blazor WebAssembly and .NET Core.",
+      "A comprehensive platform for managing employee attendance, payroll, leave, projects, CRM , and complaints in a software company.",
     subDescription: [
-      "Developed a fully interactive Single Page Application (SPA) using Blazor WebAssembly.",
-      "Implemented API interactions using .NET Core for a robust backend.",
-      "Designed responsive UI components with Tailwind CSS for an enhanced UX.",
-      "Integrated SQLite for efficient client-side database storage.",
-    ],
-    href: "",
+      " Attendance tracking, Payroll management, Leave applications, Project and task management, CRM with leads and campaigns, Complaint handling",
+"Built with React (frontend), Node.js and Express (backend), MongoDB, and Tailwind CSS",
+"Role-based dashboards for Admin and Employee with data visualization and automation",
+"Secure authentication with JWT, file uploads, and scheduled tasks for efficiency"
+],
+    href: "https://github.com/iamabdullah1/Management-Information-Software-MIS",
     logo: "",
-    images: ["/assets/projects/blazor-app.jpg"],
+    images: ["/assets/projects/1.png","/assets/projects/2.png","/assets/projects/3.png","/assets/projects/4.png","/assets/projects/5.png"],
     tags: [
-      {
+           {
         id: 1,
-        name: "Blazor",
-        path: "/assets/logos/blazor.svg",
+        name: "ReactJs",
+        path: "/assets/logos/react.svg",
       },
       {
         id: 2,
-        name: ".NET Core",
-        path: "/assets/logos/dotnetcore.svg",
+        name: "GSAP",
+        path: "/assets/logos/gsap.png",
       },
       {
         id: 3,
-        name: "SQLite",
-        path: "/assets/logos/sqlite.svg",
+        name: "Node.js",
+        path: "/assets/logos/nodejs.png",
       },
       {
         id: 4,
         name: "TailwindCSS",
         path: "/assets/logos/tailwindcss.svg",
+      },
+      {
+        id: 5,
+        name: "MongoDB",
+        path: "/assets/logos/mongodb.svg",
+      },
+      {
+        id: 6,
+        name: "Express.js",
+        path: "/assets/logos/Express-js.png",
       },
     ],
   },
