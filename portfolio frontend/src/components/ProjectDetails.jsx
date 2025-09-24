@@ -47,8 +47,19 @@ const ProjectDetails = ({
 
   const modalHeight = getModalHeight();
 
-  // Check if href is a GitHub link
-  const isGitHubLink = href && (href.includes('github.com') || href.includes('githubusercontent.com'));
+  // Handle href - can be string or object with code/live properties
+  const getLinks = () => {
+    if (!href) return { code: null, live: null };
+    
+    if (typeof href === 'string') {
+      const isGitHub = href.includes('github.com') || href.includes('githubusercontent.com');
+      return { code: isGitHub ? href : null, live: isGitHub ? null : href };
+    }
+    
+    return { code: href.code || null, live: href.live || null };
+  };
+
+  const { code: codeLink, live: liveLink } = getLinks();
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -121,17 +132,33 @@ const ProjectDetails = ({
                 />
               ))}
             </div>
-            {href && (
-              <a
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-medium cursor-pointer hover-animation text-sm sm:text-base whitespace-nowrap"
-              >
-                {isGitHubLink ? 'View Code' : 'Visit Website'}{" "}
-                <img src="assets/arrow-up.svg" className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-            )}
+            <div className="flex flex-wrap gap-3">
+              {codeLink && (
+                <a
+                  href={codeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-medium cursor-pointer hover-animation text-sm sm:text-base whitespace-nowrap"
+                  title="View Code on GitHub"
+                >
+                  View Code{" "}
+                  <img src="assets/logos/github.svg" className="w-4 h-4 sm:w-5 sm:h-5" />
+                </a>
+              )}
+              
+              {liveLink && (
+                <a
+                  href={liveLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-medium cursor-pointer hover-animation text-sm sm:text-base whitespace-nowrap"
+                  title="Visit Live Website"
+                >
+                  Visit Website{" "}
+                  <img src="assets/arrow-up.svg" className="w-4 h-4 sm:w-5 sm:h-5" />
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </motion.div>

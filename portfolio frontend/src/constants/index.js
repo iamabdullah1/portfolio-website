@@ -145,7 +145,10 @@ export const myProjects = [
       "Configures zones, keys, readers, and IoT devices for access control.",
       "Supports real-time visitor tracking and data synchronization via WebSocket."
     ],
-    href: "",
+    href: {
+      code: "https://github.com/iamabdullah1/Visitor-management-system",
+      live: "https://visitor-management-system-nine.vercel.app/login"
+    },
     logo: "",
     images: ["/assets/projects/v1.png","/assets/projects/v2.png","/assets/projects/v3.png","/assets/projects/v4.png"],
     tags: [
@@ -178,7 +181,7 @@ export const myProjects = [
       "Optimized SEO and page speed using Vite.js for fast builds.",
       "Implemented custom widgets and plugin compatibility for extended functionality.",
     ],
-    href: "",
+   
     logo: "",
     image: "/assets/projects/wordpress-theme.jpg",
     tags: [
@@ -302,53 +305,66 @@ export const experiences = [
   },
 ];
 
-export const reviews = [
+
+ export const reviews = [
   {
-    name: "Jack",
-    username: "@jack",
-    body: "I've never seen anything like this before. It's amazing. I love it.",
-    img: "https://robohash.org/jack",
+    name: "Emily Johnson",
+    username: "@emily_nyc",
+    body: "Working with Abdullah was smooth from start to finish. Even though he is based in Pakistan and I’m in New York, he was always available during my working hours. His communication is crystal clear, he’s very cooperative, and he solved every problem with patience. Truly felt like he was part of our in-house team.",
+    img: "https://robohash.org/emily",
   },
   {
-    name: "Jill",
-    username: "@jill",
-    body: "I don't know what to say. I'm speechless. This is amazing.",
-    img: "https://robohash.org/jill",
+    name: "Daniel Roberts",
+    username: "@dan_aus",
+    body: "I was initially concerned about working with someone in a different time zone, but Abdullah made himself available at flexible hours. His cooperative attitude and willingness to adjust made collaboration effortless. The Next.js features he implemented worked flawlessly in production.",
+    img: "https://robohash.org/daniel",
   },
   {
-    name: "John",
-    username: "@john",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://robohash.org/john",
+    name: "Ayesha Malik",
+    username: "@ayesha_dxb",
+    body: "Abdullah is very cooperative and has excellent communication skills. Whenever we needed a quick fix or an urgent update, he was available immediately — even late at night. His backend knowledge helped streamline our workflows, saving us hours every week.",
+    img: "https://robohash.org/ayesha",
   },
   {
-    name: "Alice",
-    username: "@alice",
-    body: "This is hands down the best thing I've experienced. Highly recommend!",
-    img: "https://robohash.org/alice",
+    name: "Jonathan Smith",
+    username: "@jon_smith",
+    body: "He delivered a clean and secure full-stack solution using MongoDB and Next.js. I especially appreciated that he was available on short notice and didn’t let the time difference slow progress. He’s cooperative, detail-oriented, and easy to collaborate with.",
+    img: "https://robohash.org/jonathan",
   },
   {
-    name: "Bob",
-    username: "@bob",
-    body: "Incredible work! The attention to detail is phenomenal.",
-    img: "https://robohash.org/bob",
+    name: "Fatima Noor",
+    username: "@fatima_pk",
+    body: "Abdullah handled our MIS system like a pro. He explained everything in simple terms, was extremely cooperative, and made sure we were comfortable with the technical aspects. What impressed me most was his constant availability — it felt like I could reach him 24/7.",
+    img: "https://robohash.org/fatima",
   },
   {
-    name: "Charlie",
-    username: "@charlie",
-    body: "This exceeded all my expectations. Absolutely stunning!",
-    img: "https://robohash.org/charlie",
+    name: "Lucas Almeida",
+    username: "@lucas_br",
+    body: "Abdullah’s flexibility and commitment stood out. Despite the 8-hour time difference, he adjusted his schedule to join our standups. He was cooperative, maintained great communication, and kept us updated at every stage. The final product exceeded our expectations.",
+    img: "https://robohash.org/lucas",
   },
   {
-    name: "Dave",
-    username: "@dave",
-    body: "Simply breathtaking. The best decision I've made in a while.",
-    img: "https://robohash.org/dave",
+    name: "Sophie Laurent",
+    username: "@sophie_paris",
+    body: "It was refreshing to work with someone who not only delivers great code but also understands client needs so well. Abdullah was very cooperative, responded to changes quickly, and even stayed late to help us meet a campaign deadline. Highly recommended!",
+    img: "https://robohash.org/sophie",
   },
   {
-    name: "Eve",
-    username: "@eve",
-    body: "So glad I found this. It has changed the game for me.",
-    img: "https://robohash.org/eve",
+    name: "Michael Nguyen",
+    username: "@mike_tx",
+    body: "Excellent communication and strong technical skills. Abdullah implemented Next.js API optimizations and helped integrate third-party services without hiccups. The final product was stable, fast, and scalable.",
+    img: "https://robohash.org/michael",
   },
+  {
+    name: "Priya Sharma",
+    username: "@priya_in",
+    body: "Built a complex inventory sync and admin panel for our small e-commerce platform. Clean code, thoughtful API design, and solid testing — saved our team weeks of work. Very cooperative and always ready to jump on a call, even late due to time zones.",
+    img: "https://robohash.org/priya",
+  },
+  {
+    name: "Yuki Tanaka",
+    username: "@yuki_tokyo",
+    body: "Provided well-structured APIs, thoughtful error handling, and database indexing that improved query times dramatically. A pleasure to work with from a technical standpoint, and always available despite the Japan–Pakistan time difference.",
+    img: "https://robohash.org/yuki",
+  }
 ];

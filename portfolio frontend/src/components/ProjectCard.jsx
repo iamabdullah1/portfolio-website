@@ -16,8 +16,19 @@ const ProjectCard = ({
     ? description.substring(0, 120) + "..." 
     : description;
 
-  // Check if href is a GitHub link
-  const isGitHubLink = href && (href.includes('github.com') || href.includes('githubusercontent.com'));
+  // Handle href - can be string or object with code/live properties
+  const getLinks = () => {
+    if (!href) return { code: null, live: null };
+    
+    if (typeof href === 'string') {
+      const isGitHub = href.includes('github.com') || href.includes('githubusercontent.com');
+      return { code: isGitHub ? href : null, live: isGitHub ? null : href };
+    }
+    
+    return { code: href.code || null, live: href.live || null };
+  };
+
+  const { code: codeLink, live: liveLink } = getLinks();
 
   return (
     <>
@@ -53,17 +64,33 @@ const ProjectCard = ({
               <img src="/assets/arrow-right.svg" className="size-4" />
             </button>
             
-            {href && (
-              <a 
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 font-medium cursor-pointer hover-animation text-sm"
-              >
-                {isGitHubLink ? 'View Code' : 'Visit Website'}
-                <img src="/assets/arrow-up.svg" className="size-4" />
-              </a>
-            )}
+            <div className="flex items-center gap-2">
+              {codeLink && (
+                <a 
+                  href={codeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-medium cursor-pointer hover-animation text-sm"
+                  title="View Code"
+                >
+                  Code
+                  <img src="/assets/logos/git.svg" className="size-4" />
+                </a>
+              )}
+              
+              {liveLink && (
+                <a 
+                  href={liveLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-medium cursor-pointer hover-animation text-sm"
+                  title="Visit Website"
+                >
+                  Live
+                  <img src="/assets/arrow-up.svg" className="size-4" />
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </div>

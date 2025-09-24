@@ -9,7 +9,9 @@ const Projects = () => {
         <h2 className="text-heading text-white">My Selected Projects</h2>
         <div className="bg-gradient-to-r from-transparent via-neutral-700 to-transparent mt-12 h-[1px] w-full" />
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 mt-12">
-          {myProjects.map((project, index) => (
+          {myProjects
+            .filter(project => ![2, 5, 6].includes(project.id))
+            .map((project, index) => (
             <ProjectCard
               key={project.id || index}
               title={project.title}
