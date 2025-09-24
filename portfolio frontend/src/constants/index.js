@@ -133,38 +133,37 @@ export const myProjects = [
   },
   {
     id: 4,
-    title: "C++ Game Engine",
+    title: "Visitor Management System",
     description:
-      "A lightweight C++ game engine designed for 2D and 3D game development.",
+      "Role-based visitor management system built with React.js for organizations to track visitors, manage users, and ensure security through features like pass generation and real-time monitoring.",
     subDescription: [
-      "Built a powerful rendering engine using OpenGL and C++.",
-      "Developed a physics engine with collision detection and particle effects.",
-      "Implemented a scripting system for easy game customization.",
-      "Optimized performance with multi-threading and efficient memory management.",
+      "Implements three-tier role-based access control (Admin, Receptionist, Security Guard) for dynamic permissions.",
+      "Manages visitor lifecycle including registration with image capture, check-in/out, and historical tracking.",
+      "Handles user creation, profile management, role assignment, and password resets.",
+      "Generates digital passes with QR codes, templates, expiry, and usage analytics.",
+      "Provides advanced reporting with filtering, CSV export, and visual analytics",
+      "Configures zones, keys, readers, and IoT devices for access control.",
+      "Supports real-time visitor tracking and data synchronization via WebSocket."
     ],
     href: "",
     logo: "",
-    images: ["/assets/projects/game-engine.jpg"],
+    images: ["/assets/projects/v1.png","/assets/projects/v2.png","/assets/projects/v3.png","/assets/projects/v4.png"],
     tags: [
-      {
+       {
         id: 1,
-        name: "C++",
-        path: "/assets/logos/cplusplus.svg",
+        name: "ReactJs",
+        path: "/assets/logos/react.svg",
       },
       {
         id: 2,
-        name: "C#",
-        path: "/assets/logos/csharp.svg",
+        name: "GSAP",
+        path: "/assets/logos/gsap.png",
       },
+   
       {
         id: 3,
-        name: "Git",
-        path: "/assets/logos/git.svg",
-      },
-      {
-        id: 4,
-        name: "Microsoft",
-        path: "/assets/logos/microsoft.svg",
+        name: "TailwindCSS",
+        path: "/assets/logos/tailwindcss.svg",
       },
     ],
   },
