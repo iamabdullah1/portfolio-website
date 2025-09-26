@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 // Enhanced smooth scroll utility using Lenis
@@ -18,12 +18,12 @@ const smoothScrollTo = (elementId) => {
   }
 };
 
-function Navigation() {
+function Navigation({ activeSection }) {
   return (
     <ul className="nav-ul">
       <li className="nav-li">
         <a 
-          className="nav-link" 
+          className={`nav-link ${activeSection === 'hero' ? 'text-white font-semibold' : 'text-neutral-400'}`} 
           href="#hero"
           onClick={(e) => {
             e.preventDefault();
@@ -35,7 +35,7 @@ function Navigation() {
       </li>
       <li className="nav-li">
         <a 
-          className="nav-link" 
+          className={`nav-link ${activeSection === 'about' ? 'text-white font-semibold' : 'text-neutral-400'}`} 
           href="#about"
           onClick={(e) => {
             e.preventDefault();
@@ -47,11 +47,11 @@ function Navigation() {
       </li>
       <li className="nav-li">
         <a 
-          className="nav-link" 
-          href="#work"
+          className={`nav-link ${activeSection === 'projects' ? 'text-white font-semibold' : 'text-neutral-400'}`} 
+          href="#projects"
           onClick={(e) => {
             e.preventDefault();
-            smoothScrollTo('work');
+            smoothScrollTo('projects');
           }}
         >
           Work
@@ -59,7 +59,7 @@ function Navigation() {
       </li>
       <li className="nav-li">
         <a 
-          className="nav-link" 
+          className={`nav-link ${activeSection === 'contact' ? 'text-white font-semibold' : 'text-neutral-400'}`} 
           href="#contact"
           onClick={(e) => {
             e.preventDefault();
@@ -74,6 +74,40 @@ function Navigation() {
 }
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
+
+  useEffect(() => {
+    const sections = ['hero', 'about', 'projects', 'contact'];
+    
+    const observerOptions = {
+      root: null,
+      rootMargin: '-50% 0px -50% 0px',
+      threshold: 0
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    // Observe all sections
+    sections.forEach((sectionId) => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <div className="fixed inset-x-0 z-20 w-full backdrop-blur-lg bg-primary/40">
       <div className="mx-auto c-space max-w-7xl">
@@ -95,7 +129,7 @@ const Navbar = () => {
             />
           </button>
           <nav className="hidden sm:flex">
-            <Navigation />
+            <Navigation activeSection={activeSection} />
           </nav>
         </div>
       </div>
@@ -110,7 +144,7 @@ const Navbar = () => {
             transition={{ duration: 0.5 }}
           >
             <nav className="pb-5">
-              <Navigation />
+              <Navigation activeSection={activeSection} />
             </nav>
           </motion.div>
         )}
