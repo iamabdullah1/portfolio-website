@@ -6,7 +6,7 @@ import SmoothScroll from './components/SmoothScroll.jsx'
 import Experiences from './sections/Experiences.jsx'
 import Projects from './sections/Projects.jsx'
 import Testimonial from './sections/Testimonial.jsx'
-// import Contact from './sections/Contact.jsx' // Removed for Upwork compliance
+// import Contact from './sections/Contact.jsx' // Removed for Upwork compliance and
 import Footer from './sections/Footer.jsx'
 
 const App = () => {
