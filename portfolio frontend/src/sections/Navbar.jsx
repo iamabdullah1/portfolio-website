@@ -57,18 +57,7 @@ function Navigation({ activeSection }) {
           Work
         </a>
       </li>
-      <li className="nav-li">
-        <a 
-          className={`nav-link ${activeSection === 'contact' ? 'text-white font-semibold' : 'text-neutral-400'}`} 
-          href="#contact"
-          onClick={(e) => {
-            e.preventDefault();
-            smoothScrollTo('contact');
-          }}
-        >
-          Contact
-        </a>
-      </li>
+    
     </ul>
   );
 }
