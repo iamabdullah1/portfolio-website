@@ -6,7 +6,7 @@ import SmoothScroll from './components/SmoothScroll.jsx'
 import Experiences from './sections/Experiences.jsx'
 import Projects from './sections/Projects.jsx'
 import Testimonial from './sections/Testimonial.jsx'
-import Contact from './sections/Contact.jsx'
+// import Contact from './sections/Contact.jsx' // Removed for Upwork compliance
 import Footer from './sections/Footer.jsx'
 
 const App = () => {
@@ -19,7 +19,7 @@ const App = () => {
         <Experiences />
         <Projects />
         <Testimonial />
-        <Contact />
+        {/* <Contact /> */} {/* Removed for Upwork compliance */}
         <Footer />
     
       </div>
