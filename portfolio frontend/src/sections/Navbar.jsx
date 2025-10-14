@@ -77,7 +77,7 @@ const Navbar = () => {
   const [activeSection, setActiveSection] = useState('hero');
 
   useEffect(() => {
-    const sections = ['hero', 'about', 'projects', 'contact'];
+    const sections = ['hero', 'about', 'projects'];
     
     const observerOptions = {
       root: null,
