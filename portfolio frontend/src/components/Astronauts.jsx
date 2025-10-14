@@ -80,8 +80,8 @@ useFrame((state)=>{
     // Apply scale changes (shrink as you scroll down)
     group.current.scale.setScalar(originalScale - scaleChange);
     
-    // Bidirectional scroll-based rotations
-    group.current.rotation.x = -Math.PI / 2 + (scrollY * 0.3);
+    // Bidirectional scroll-based rotations with more backward rotation on scroll
+    group.current.rotation.x = -Math.PI / 2 + (scrollY * 2); // Increased from 0.3 to 0.8 for more backward rotation
     group.current.rotation.z = 2.2 + (scrollY * 1.2) + Math.sin(time * 0.2) * 0.1;
     
     // Keep hand movement
