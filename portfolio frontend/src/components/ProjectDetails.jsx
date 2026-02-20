@@ -86,35 +86,48 @@ const ProjectDetails = ({
         >
           <img src="assets/close.svg" className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
-        <div className="relative w-full h-48 sm:h-64 md:h-80 rounded-t-2xl overflow-hidden flex items-center justify-center bg-black">
-          <img
-            src={images[currentImageIndex]}
-            alt={`${title} image ${currentImageIndex + 1}`}
-            className="max-w-full max-h-full object-contain rounded-t-2xl"
-          />
-          {images.length > 1 && (
-            <>
-              <button
-                onClick={prevImage}
-                className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-midnight/70 hover:bg-midnight/90 text-white rounded-full p-1 z-20"
-                aria-label="Previous Image"
-                tabIndex={0}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') prevImage(); }}
-              >
-                &#8592;
-              </button>
-              <button
-                onClick={nextImage}
-                className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-midnight/70 hover:bg-midnight/90 text-white rounded-full p-1 z-20"
-                aria-label="Next Image"
-                tabIndex={0}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') nextImage(); }}
-              >
-                &#8594;
-              </button>
-            </>
-          )}
-        </div>
+        {images && images.length > 0 ? (
+          <div className="relative w-full h-48 sm:h-64 md:h-80 rounded-t-2xl overflow-hidden flex items-center justify-center bg-black">
+            <img
+              src={images[currentImageIndex]}
+              alt={`${title} image ${currentImageIndex + 1}`}
+              className="max-w-full max-h-full object-contain rounded-t-2xl"
+            />
+            {images.length > 1 && (
+              <>
+                <button
+                  onClick={prevImage}
+                  className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-midnight/70 hover:bg-midnight/90 text-white rounded-full p-1 z-20"
+                  aria-label="Previous Image"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') prevImage(); }}
+                >
+                  &#8592;
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-midnight/70 hover:bg-midnight/90 text-white rounded-full p-1 z-20"
+                  aria-label="Next Image"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') nextImage(); }}
+                >
+                  &#8594;
+                </button>
+              </>
+            )}
+          </div>
+        ) : (
+          <div className="relative w-full h-48 sm:h-64 rounded-t-2xl overflow-hidden flex flex-col items-center justify-center bg-gradient-to-br from-violet-950 via-indigo-950 to-navy border-b border-white/10">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(139,92,246,0.2)_0%,_transparent_70%)]" />
+            <span className="inline-block px-4 py-1.5 text-sm bg-violet-500/20 text-violet-300 rounded-full border border-violet-500/30 mb-4 z-10 font-medium">
+              ✦ AI Powered — No Preview Available
+            </span>
+            <h4 className="text-white text-xl sm:text-2xl font-bold text-center px-6 z-10">{title}</h4>
+            <p className="text-white/50 text-xs sm:text-sm text-center mt-2 px-8 z-10 leading-relaxed">
+              This project is in development — visuals coming soon.
+            </p>
+          </div>
+        )}
         <div className="p-4 sm:p-6 md:p-8">
           <h5 className="mb-3 text-xl sm:text-2xl md:text-3xl font-bold text-white">{title}</h5>
           <p className="mb-4 font-normal text-neutral-400 text-sm sm:text-base leading-relaxed">{description}</p>
@@ -123,14 +136,24 @@ const ProjectDetails = ({
           ))}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6">
             <div className="flex flex-wrap gap-2 sm:gap-3">
-              {tags.map((tag) => (
-                <img
-                  key={tag.id}
-                  src={tag.path}
-                  alt={tag.name}
-                  className="rounded-lg w-8 h-8 sm:w-10 sm:h-10 hover-animation"
-                />
-              ))}
+              {tags.map((tag) =>
+                tag.path ? (
+                  <img
+                    key={tag.id}
+                    src={tag.path}
+                    alt={tag.name}
+                    title={tag.name}
+                    className="rounded-lg w-8 h-8 sm:w-10 sm:h-10 hover-animation"
+                  />
+                ) : (
+                  <span
+                    key={tag.id}
+                    className="px-2 py-1 text-xs bg-violet-500/20 text-violet-300 rounded-md border border-violet-500/30 font-medium hover-animation"
+                  >
+                    {tag.name}
+                  </span>
+                )
+              )}
             </div>
             <div className="flex flex-wrap gap-3">
               {codeLink && (

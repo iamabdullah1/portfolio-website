@@ -33,7 +33,24 @@ const ProjectCard = ({
   return (
     <>
       <div className="relative border shadow-sm rounded-2xl bg-gradient-to-l from-midnight to-navy border-white/10 hover:-translate-y-1 duration-200 transition-transform">
-        <img src={images && images.length > 0 ? images[0] : ""} alt={title} className="w-full h-48 object-cover rounded-t-2xl" />
+        {images && images.length > 0 ? (
+          <img src={images[0]} alt={title} className="w-full h-48 object-cover rounded-t-2xl" />
+        ) : (
+          <div className="w-full h-48 rounded-t-2xl bg-gradient-to-br from-violet-950 via-indigo-950 to-navy flex flex-col items-center justify-center border-b border-white/10 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(139,92,246,0.15)_0%,_transparent_70%)]" />
+            <span className="inline-block px-3 py-1 text-xs bg-violet-500/20 text-violet-300 rounded-full border border-violet-500/30 mb-3 z-10">
+              ✦ AI Powered
+            </span>
+            <p className="text-white/70 text-sm font-light leading-relaxed text-center px-6 z-10 line-clamp-3">
+              {description.length > 110 ? description.substring(0, 110) + "..." : description}
+            </p>
+            <div className="mt-3 flex gap-1 z-10">
+              {[...Array(3)].map((_, i) => (
+                <span key={i} className="w-1.5 h-1.5 rounded-full bg-violet-400/60" />
+              ))}
+            </div>
+          </div>
+        )}
         <div className="p-5">
           <h5 className="mb-2 text-xl font-bold text-white">{title}</h5>
           

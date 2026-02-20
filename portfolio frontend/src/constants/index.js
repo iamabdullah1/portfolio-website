@@ -1,6 +1,71 @@
 export const myProjects = [
-  {
+    {
     id: 1,
+    title: "Personal AI Chatbot (RAG)",
+    description:
+      "An AI-powered personal assistant using Retrieval-Augmented Generation (RAG) to answer questions about me.",
+    subDescription: [
+      "Built a production-ready AI chatbot using Retrieval-Augmented Generation (RAG) that answers questions based on real, structured data instead of relying only on generic LLM training.",
+      "The system retrieves relevant information from personal or business documents, injects that context into the prompt, and generates accurate, data-backed responses. It can act as a digital AI version of you — answering questions about your background, skills, experience, CV, LinkedIn, or portfolio.",
+      "This chatbot is fully customizable and can be adapted for businesses like restaurants (orders, menu queries, complaints), real estate, SaaS, e-commerce, or consultants by simply replacing the knowledge base with their data.",
+      "Tech stack: Next.js 14, TypeScript, Tailwind CSS (frontend), Python + FastAPI + LangChain (backend), ChromaDB/Pinecone (vector database), OpenAI GPT-4 — deployed on Vercel with Railway/Render.",
+    ],
+    href: {
+      code: "https://github.com/iamabdullah1/personal-rag-llm-app/tree/main/personal-rag-app",
+      live: "https://abdullahllm.vercel.app/"
+    },
+    logo: "",
+    images: ["/assets/projects/llm2.png","/assets/projects/llm1.png"],
+    tags: [
+      {
+        id: 1,
+        name: "Python",
+        path: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+      },
+      {
+        id: 2,
+        name: "FastAPI",
+        path: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg",
+      },
+      {
+        id: 3,
+        name: "LangChain",
+        path: "",
+      },
+      {
+        id: 4,
+        name: "Pinecone",
+        path: "",
+      },
+      {
+        id: 5,
+        name: "OpenAI GPT-4",
+        path: "",
+      },
+    {
+        id: 6,
+        name: "HuggingFace Inference API",
+        path: "",
+      },
+      {
+        id: 7,
+        name: "Next.js 14",
+        path: "/assets/logos/nextjs.svg",
+      },
+      {
+        id: 8,
+        name: "TypeScript",
+        path: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
+      },
+      {
+        id: 9,
+        name: "TailwindCSS",
+        path: "/assets/logos/tailwindcss.svg",
+      },
+    ],
+  },
+  {
+    id: 7,
     title: "Education Consultancy Website",
     description:
       "Provides guidance for students aspiring to study abroad, offering consultancy services for university admissions, visa processes, and international career counseling. The platform connects students with verified consultants and resources to simplify their study abroad journey.",
@@ -244,6 +309,7 @@ export const myProjects = [
       },
     ],
   },
+
 ];
 
 export const mySocials = [
