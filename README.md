@@ -160,7 +160,7 @@ npm run preview # Preview production build
 **Abdullah**
 - GitHub: [@iamabdullah1](https://github.com/iamabdullah1)
 - LinkedIn: (https://www.linkedin.com/in/abdullah-akram-a8b213318/)
-- Portfolio: https://abdullah-akram.vercel.app/
+- Portfolio: https://abdullahakram.me/
 
 ---
 
